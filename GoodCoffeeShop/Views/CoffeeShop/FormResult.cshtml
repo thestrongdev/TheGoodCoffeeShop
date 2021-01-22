@@ -1,0 +1,16 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model GoodCoffeeShop.Models.CoffeeShop.FormResultViewModel
+
+<h1>Welcome @Model.theUser.FirstName!</h1>
+<h3>Please see your submission below. Sensitive information such as your password has been omitted.</h3>
+<br />
+
+<p>First Name: @Model.theUser.FirstName</p>
+<p>Last Name: @Model.theUser.LastName</p>
+<p>Email: @Model.theUser.Email</p>
+<p>Phone Number: @Model.theUser.PhoneNum</p>

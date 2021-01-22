@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "60h0IdD2knqBGuPCm+v2KvGCgsqyxLoymbeLKmN/yaZOyyer9AsuD5S8YVQk16dZ0V//Db7wWlHWafgzecHNrg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\goods\\source\\repos\\GoodCoffeeShop\\GoodCoffeeShop\\GoodCoffeeShop.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\goods\\.nuget\\packages\\bootstrap\\4.6.0\\bootstrap.4.6.0.nupkg.sha512",
+    "C:\\Users\\goods\\.nuget\\packages\\jquery\\3.0.0\\jquery.3.0.0.nupkg.sha512",
+    "C:\\Users\\goods\\.nuget\\packages\\popper.js\\1.16.1\\popper.js.1.16.1.nupkg.sha512"
+  ],
+  "logs": []
+}
