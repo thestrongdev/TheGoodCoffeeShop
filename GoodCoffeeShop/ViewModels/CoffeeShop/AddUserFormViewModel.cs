@@ -8,7 +8,6 @@ namespace GoodCoffeeShop.Models.CoffeeShop
 {
     public class AddUserFormViewModel
     {
-
         
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -20,5 +19,7 @@ namespace GoodCoffeeShop.Models.CoffeeShop
         public string Password { get; set; }
 
         public string PasswordConfirmation { get; set; }
+
+        public string Funds { get; set; }
     }
 }

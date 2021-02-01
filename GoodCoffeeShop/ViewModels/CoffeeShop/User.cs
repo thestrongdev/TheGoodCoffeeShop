@@ -7,6 +7,7 @@ namespace GoodCoffeeShop.Services
 {
     public class User
     {
+        public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
@@ -17,6 +18,10 @@ namespace GoodCoffeeShop.Services
         public string Password { get; set; }
 
         public string PasswordConfirmation { get; set; }
+
+        public double Funds { get; set; }
+
+        public string UserName { get; set; }
 
     }
 }

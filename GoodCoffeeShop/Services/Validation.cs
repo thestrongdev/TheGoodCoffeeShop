@@ -8,6 +8,9 @@ namespace GoodCoffeeShop.Services
 {
     public class Validation
     {
+        
+               
+        
         public static bool ValidatePW(User user)
         {
             if (user.Password == null ||

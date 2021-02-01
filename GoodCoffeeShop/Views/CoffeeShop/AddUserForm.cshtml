@@ -17,6 +17,7 @@
             <li>Email address must be valid (i.e. contenthere@domain.[org, com, net, etc]).</li>
             <li>Password must match password confirmation.</li>
             <li>Phone number must only contain numbers, 10 digits including area code.</li>
+            @*<li>Funds must be a whole number.</li>*@
             <li>No fields may be empty</li>
         </ul>
     </div>
@@ -93,6 +94,14 @@
     </fieldset>
 
     <br />
+
+
+    <h3>FUNDS TO DEPOSIT FOR SHOPPING</h3>
+    <div>
+        <label asp-for="Funds"></label>
+        <input asp-for="Funds" />
+    </div>
+
     <div class="form-check">
         <input type="checkbox" class="form-check-input">
         <label class="form-check-label">I am not a robot.</label>
