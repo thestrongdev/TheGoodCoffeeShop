@@ -11,14 +11,14 @@ namespace GoodCoffeeShop.Services
         
                
         
-        public static bool ValidatePW(User user)
+        public static bool ValidatePW(OldUser oldUser)
         {
-            if (user.Password == null ||
-              user.PasswordConfirmation == null)
+            if (oldUser.Password == null ||
+              oldUser.PasswordConfirmation == null)
             {
                 return false;
             }
-            else if(user.Password != user.PasswordConfirmation)
+            else if(oldUser.Password != oldUser.PasswordConfirmation)
             {
                 return false;
             }
@@ -28,15 +28,15 @@ namespace GoodCoffeeShop.Services
             }
         }
 
-        public static bool ValidateNames(User user)
+        public static bool ValidateNames(OldUser oldUser)
         {
             Regex namePattern = new Regex(@"^[A-Z][[a-z]+$");
 
-            if(user.LastName == null || user.FirstName == null)
+            if(oldUser.LastName == null || oldUser.FirstName == null)
             {
                 return false;
             }
-            else if(namePattern.IsMatch(user.LastName) && namePattern.IsMatch(user.FirstName))
+            else if(namePattern.IsMatch(oldUser.LastName) && namePattern.IsMatch(oldUser.FirstName))
             {
                 return true;
             }
@@ -46,15 +46,15 @@ namespace GoodCoffeeShop.Services
             }
         }
 
-        public static bool ValidatePhoneNumber(User user)
+        public static bool ValidatePhoneNumber(OldUser oldUser)
         {
             Regex phonePattern = new Regex(@"^\d{10}$");
 
-            if (user.PhoneNum==null) {
+            if (oldUser.PhoneNum==null) {
 
                 return false;
 
-            } else if (phonePattern.IsMatch(user.PhoneNum) && user.PhoneNum != null)
+            } else if (phonePattern.IsMatch(oldUser.PhoneNum) && oldUser.PhoneNum != null)
             {
                 return true;
             }
@@ -64,15 +64,15 @@ namespace GoodCoffeeShop.Services
             }
         }
 
-        public static bool ValidateEmail(User user)
+        public static bool ValidateEmail(OldUser oldUser)
         {
             Regex emailPattern = new Regex(@"^\w+@\w{5,10}.\w{2,3}$");
 
-            if(user.Email == null)
+            if(oldUser.Email == null)
             {
                 return false;
             }
-            else if (emailPattern.IsMatch(user.Email) && user.Email!=null)
+            else if (emailPattern.IsMatch(oldUser.Email) && oldUser.Email!=null)
             {
                 return true;
             }

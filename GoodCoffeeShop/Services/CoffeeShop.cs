@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace GoodCoffeeShop.Services
 {
-    public class CoffeeShop : IUser
+    public class CoffeeShop : IOldUser
     {
-        public User theUser { get; } = new User();
+        public OldUser theOldUser { get; } = new OldUser();
     }
 }

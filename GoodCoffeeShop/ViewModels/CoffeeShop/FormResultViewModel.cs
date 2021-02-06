@@ -8,7 +8,7 @@ namespace GoodCoffeeShop.Models.CoffeeShop
 {
     public class FormResultViewModel
     {
-        public User theUser { get; set; }
-        public List<User> Users { get; set; }
+        public OldUser theOldUser { get; set; }
+        public List<OldUser> OldUsers { get; set; }
     }
 }

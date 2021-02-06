@@ -2,6 +2,8 @@
 using GoodCoffeeShop.Models.CoffeeShop;
 using GoodCoffeeShop.Services;
 using GoodCoffeeShop.ViewModels.CoffeeShop;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,14 +12,19 @@ using System.Threading.Tasks;
 
 namespace GoodCoffeeShop.Controllers
 {
+    [Authorize]
     public class CoffeeShopController : Controller
     {
-        private readonly IUser _user;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IOldUser _oldUser;
         private readonly ShopDBContext _shopDBContext;
 
-        public CoffeeShopController(IUser user, ShopDBContext shopDBContext)
+        public CoffeeShopController(IOldUser oldUser, 
+            ShopDBContext shopDBContext,
+            UserManager<IdentityUser> userManager)
         {
-            _user = user;
+            _userManager = userManager;
+            _oldUser = oldUser;
             _shopDBContext = shopDBContext;
         }
 
@@ -34,52 +41,52 @@ namespace GoodCoffeeShop.Controllers
         {
             var viewModel = new FormResultViewModel();
             var isDouble = double.TryParse(model.Funds, out double actualFunds);
-            var user = new UsersDAL();
+            var oldUser = new OldUsersDAL();
 
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.Email = model.Email;
-            user.PhoneNum = model.PhoneNum;
-            user.Password = model.Password;
-            user.PasswordConfirmation = model.PasswordConfirmation;
-            user.UserName = $"{user.FirstName.ToLower()}{user.LastName.ToLower()}{user.PhoneNum.Substring(6, 4)}";
-            user.Funds = actualFunds;
+            oldUser.FirstName = model.FirstName;
+            oldUser.LastName = model.LastName;
+            oldUser.Email = model.Email;
+            oldUser.PhoneNum = model.PhoneNum;
+            oldUser.Password = model.Password;
+            oldUser.PasswordConfirmation = model.PasswordConfirmation;
+            oldUser.UserName = $"{oldUser.FirstName.ToLower()}{oldUser.LastName.ToLower()}{oldUser.PhoneNum.Substring(6, 4)}";
+            oldUser.Funds = actualFunds;
 
             //var userTest = new User(); //MAP FOR INDIVIDUAL USER INFO IN MODEL
-            _user.theUser.FirstName = user.FirstName;
-            _user.theUser.LastName = user.LastName;
-            _user.theUser.Email = user.Email;
-            _user.theUser.PhoneNum = user.PhoneNum;
-            _user.theUser.Password = user.Password;
-            _user.theUser.PasswordConfirmation = user.PasswordConfirmation;
-            _user.theUser.Funds = actualFunds;
-            _user.theUser.UserID = user.UserID;
+            _oldUser.theOldUser.FirstName = oldUser.FirstName;
+            _oldUser.theOldUser.LastName = oldUser.LastName;
+            _oldUser.theOldUser.Email = oldUser.Email;
+            _oldUser.theOldUser.PhoneNum = oldUser.PhoneNum;
+            _oldUser.theOldUser.Password = oldUser.Password;
+            _oldUser.theOldUser.PasswordConfirmation = oldUser.PasswordConfirmation;
+            _oldUser.theOldUser.Funds = actualFunds;
+            _oldUser.theOldUser.OldUserId = oldUser.OldUserId;
 
-            viewModel.theUser = _user.theUser;
+            viewModel.theOldUser = _oldUser.theOldUser;
 
-            if (Validation.ValidateNames(viewModel.theUser) &&
-              Validation.ValidateEmail(viewModel.theUser) &&
-              Validation.ValidatePhoneNumber(viewModel.theUser) &&
-              Validation.ValidatePW(viewModel.theUser) && isDouble) 
+            if (Validation.ValidateNames(viewModel.theOldUser) &&
+              Validation.ValidateEmail(viewModel.theOldUser) &&
+              Validation.ValidatePhoneNumber(viewModel.theOldUser) &&
+              Validation.ValidatePW(viewModel.theOldUser) && isDouble) 
             {
-                _shopDBContext.Users.Add(user);
+                _shopDBContext.OldUsers.Add(oldUser);
                 _shopDBContext.SaveChanges();
 
-                var users = _shopDBContext.Users.ToList();
+                var oldUsers = _shopDBContext.OldUsers.ToList();
 
                 //MAP UsersDAL to FormResultsView
-                var usersViewModelList = users
-                    .Select(usersDal => new User()
+                var usersViewModelList = oldUsers
+                    .Select(usersDal => new OldUser()
                     {
                         FirstName = usersDal.FirstName,
                         LastName = usersDal.LastName,
                         Email = usersDal.Email,
                         Password = usersDal.Password,
                         PasswordConfirmation = usersDal.PasswordConfirmation,
-                        UserID = usersDal.UserID
+                        OldUserId = usersDal.OldUserId
                     }).ToList();
 
-                viewModel.Users = usersViewModelList;
+                viewModel.OldUsers = usersViewModelList;
 
                 return View("FormResult", viewModel);
             }
@@ -108,12 +115,12 @@ namespace GoodCoffeeShop.Controllers
             
             var viewModel = new ShopViewModel();
 
-            foreach (var user in _shopDBContext.Users.ToList())
+            foreach (var oldUser in _shopDBContext.OldUsers.ToList())
             {
-                if (user.UserName == model.UserName && user.Password == model.Password)
+                if (oldUser.UserName == model.UserName && oldUser.Password == model.Password)
                 {
-                    model.CurrentUserID = user.UserID;
-                    model.Funds = user.Funds;
+                    model.CurrentUserID = oldUser.OldUserId;
+                    model.Funds = oldUser.Funds;
 
                 }
             }
@@ -163,18 +170,18 @@ namespace GoodCoffeeShop.Controllers
             bool userInDB = false;
             bool enoughCash = false;
 
-            foreach (var user in _shopDBContext.Users.ToList())
+            foreach (var oldUser in _shopDBContext.OldUsers.ToList())
             {
-                if (user.UserID == viewModel.CurrentUserID)
+                if (oldUser.OldUserId == viewModel.CurrentUserID)
                 {
                     userInDB = true;
 
-                    if (user.Funds > price)
+                    if (oldUser.Funds > price)
                     {
                         enoughCash = true;
-                        user.Funds = user.Funds - price;
+                        oldUser.Funds = oldUser.Funds - price;
                         _shopDBContext.SaveChanges();
-                        viewModel.Funds = user.Funds;
+                        viewModel.Funds = oldUser.Funds;
                     }
                 }
             }
@@ -204,16 +211,16 @@ namespace GoodCoffeeShop.Controllers
 
 
 
-            private User GetUserWhereIDIsFirst(int id)
+            private OldUser GetUserWhereIDIsFirst(int id)
         {
-            UsersDAL userDAL = _shopDBContext.Users
-                .Where(user => user.UserID == id).FirstOrDefault();
+            OldUsersDAL userDAL = _shopDBContext.OldUsers
+                .Where(oldUser => oldUser.OldUserId == id).FirstOrDefault();
 
 
-            var user = new User();
-            user.UserID = userDAL.UserID;
-            user.Funds = userDAL.Funds;
-            return user;
+            var oldUser = new OldUser();
+            oldUser.OldUserId = userDAL.OldUserId;
+            oldUser.Funds = userDAL.Funds;
+            return oldUser;
         }
 
     }

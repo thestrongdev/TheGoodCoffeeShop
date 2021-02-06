@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,5 +18,10 @@ namespace GoodCoffeeShop.DALModels
 
         public int Quantity { get; set; }
         public double Price { get; set; }
+
+        [ForeignKey("Id")]
+        public string Id { get; set; }
+
+        public IdentityUser User { get; set; }
     }
 }
