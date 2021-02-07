@@ -6,9 +6,13 @@
 
 @model GoodCoffeeShop.ViewModels.CoffeeShop.ShopViewModel
 
-<h1>ID NUMBER: @Model.CurrentUserID</h1>
-<h1>AVAILABLE FUNDS: $@Model.Funds</h1>
-<br />
+
+    <h1>ID NUMBER: @Model.CurrentUserID</h1>
+    <h1>AVAILABLE FUNDS: $@Model.Funds</h1>
+    <br />
+    
+
+
 
 @{
     foreach (var item in Model.Items)
@@ -18,9 +22,15 @@
         <p>Price: @item.Price</p>
         <p>Quantity: @item.Quantity</p>
 
-        if (Model.CurrentUserID >0)
+
+        if (item.PurchasedByUser != true)
         {
-            <a asp-controller="CoffeeShop" asp-action="BuyResult" asp-route-id="@item.ItemID" asp-route-userid="@Model.CurrentUserID" asp-route-funds="@Model.Funds">BUY ITEM</a>
+            <a asp-controller="CoffeeShop" asp-action="BuyResult" asp-route-id="@item.ItemID" asp-route-userid="@Model.CurrentUserID">BUY ITEM</a>
+        }
+        else
+        {
+            <h3>Purchased by current user: @Model.CurrentUserID </h3>
+            <a asp-controller="CoffeeShop" asp-action="BuyResult" asp-route-id="@item.ItemID" asp-route-userid="@Model.CurrentUserID">BUY ITEM AGAIN?</a>
         }
 
         <br />

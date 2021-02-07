@@ -25,7 +25,10 @@ namespace GoodCoffeeShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IUser, CoffeeShop>();
+            services.AddSingleton<ICurrentUser, CoffeeShop>();
+
+            services.AddSingleton<IUserItems, UserItems>();
+
             services.AddDbContext<ShopDBContext>(options =>
             {
                 var connectionString = Configuration.GetConnectionString("DefaultConnection");

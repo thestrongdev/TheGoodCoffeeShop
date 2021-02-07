@@ -8,17 +8,34 @@ using System.Threading.Tasks;
 
 namespace GoodCoffeeShop.DALModels
 {
-    public class ItemsDAL
+    public class UserItemsDAL
     {
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ItemID { get; set; }
+        public int UserItemId { get; set; }
+
+        public int UserId { get; set; }
+
+        public int ItemId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
         public int Quantity { get; set; }
         public double Price { get; set; }
 
-       
+
+        //couldn't get this to do what i needed in a timely manner. Will attemp again later
+
+        //[ForeignKey("Id")]
+
+        //public int UserId { get; set; }
+        //public UsersDAL CurrentUser { get; set; }
+
+
+        //[ForeignKey("Id")]
+
+        //public int ItemId { get; set; }
+        //public ItemsDAL PurchasedItem { get; set; }
     }
 }

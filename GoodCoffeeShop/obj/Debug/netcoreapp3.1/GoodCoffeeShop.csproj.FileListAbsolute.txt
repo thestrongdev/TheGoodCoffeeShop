@@ -83,3 +83,12 @@ C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.
 C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\CoffeeShop\LogIn.cshtml.g.cs
 C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\CoffeeShop\Shop.cshtml.g.cs
 C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\CoffeeShop\ErrorPage.cshtml.g.cs
+C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\CoffeeShop\LoggedOut.cshtml.g.cs
+C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\CoffeeShop\PleaseLogIn.cshtml.g.cs
+C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\CoffeeShop\SuccessfulLogIn.cshtml.g.cs
+C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\UserItems\DeleteConfirmation.cshtml.g.cs
+C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\UserItems\ItemDetails.cshtml.g.cs
+C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\UserItems\UserPurchases.cshtml.g.cs
+C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\UserItems\MustBeLoggedIn.cshtml.g.cs
+C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\CoffeeShop\BuyResult.cshtml.g.cs
+C:\Users\goods\source\repos\GoodCoffeeShop\GoodCoffeeShop\obj\Debug\netcoreapp3.1\Razor\Views\UserItems\ItemDeleted.cshtml.g.cs

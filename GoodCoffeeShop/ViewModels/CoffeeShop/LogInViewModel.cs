@@ -11,8 +11,6 @@ namespace GoodCoffeeShop.ViewModels.CoffeeShop
         public string UserName { get; set; }
         public string Password { get; set; }
 
-        public bool UserLoggedIn { get; set; }
-
         public int CurrentUserID { get; set; }
 
         public double Funds { get; set; }

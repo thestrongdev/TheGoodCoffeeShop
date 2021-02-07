@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoodCoffeeShop.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    [Migration("20210131000559_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210207172212_redoUserItems")]
+    partial class redoUserItems
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,36 @@ namespace GoodCoffeeShop.Migrations
                     b.HasKey("ItemID");
 
                     b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("GoodCoffeeShop.DALModels.UserItemsDAL", b =>
+                {
+                    b.Property<int>("UserItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserItemId");
+
+                    b.ToTable("UserItems");
                 });
 
             modelBuilder.Entity("GoodCoffeeShop.DALModels.UsersDAL", b =>

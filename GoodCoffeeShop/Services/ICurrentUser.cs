@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace GoodCoffeeShop.Services
 {
-    public interface IUser
+    public interface ICurrentUser
     {
-        public User theUser { get; } 
+        public User theUser { get; }
+        public bool loggedIn { get; set; }
     }
 }

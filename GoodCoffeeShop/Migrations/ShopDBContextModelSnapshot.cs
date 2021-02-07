@@ -42,6 +42,36 @@ namespace GoodCoffeeShop.Migrations
                     b.ToTable("Items");
                 });
 
+            modelBuilder.Entity("GoodCoffeeShop.DALModels.UserItemsDAL", b =>
+                {
+                    b.Property<int>("UserItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserItemId");
+
+                    b.ToTable("UserItems");
+                });
+
             modelBuilder.Entity("GoodCoffeeShop.DALModels.UsersDAL", b =>
                 {
                     b.Property<int>("UserID")

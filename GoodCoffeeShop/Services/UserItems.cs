@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace GoodCoffeeShop.Services
 {
-    public class CoffeeShop : ICurrentUser
+    public class UserItems : IUserItems
     {
-        public User theUser { get; } = new User();
-        public bool loggedIn { get; set ; }
+        public List<Item> userPurchases { get; } = new List<Item>();
 
     }
 }

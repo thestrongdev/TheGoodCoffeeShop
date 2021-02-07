@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace GoodCoffeeShop.Services
 {
-    public class CoffeeShop : ICurrentUser
+    public interface IUserItems
     {
-        public User theUser { get; } = new User();
-        public bool loggedIn { get; set ; }
+        public List<Item> userPurchases { get;  }
+
 
     }
 }

@@ -16,5 +16,7 @@ namespace GoodCoffeeShop.Services
 
         public DbSet<UsersDAL> Users { get; set; }
         public DbSet<ItemsDAL> Items { get; set; }
+
+        public DbSet<UserItemsDAL> UserItems { get; set; }
     }
 }

@@ -13,5 +13,7 @@ namespace GoodCoffeeShop.ViewModels.CoffeeShop
 
         public int Quantity { get; set; }
         public double Price { get; set; }
+
+        public bool PurchasedByUser { get; set; }
     }
 }

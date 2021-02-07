@@ -12,13 +12,15 @@ namespace GoodCoffeeShop.Controllers
 {
     public class CoffeeShopController : Controller
     {
-        private readonly IUser _user;
+        private readonly ICurrentUser _user;
         private readonly ShopDBContext _shopDBContext;
+        private readonly IUserItems _userItem;
 
-        public CoffeeShopController(IUser user, ShopDBContext shopDBContext)
+        public CoffeeShopController(ICurrentUser user, ShopDBContext shopDBContext, IUserItems useritem)
         {
             _user = user;
             _shopDBContext = shopDBContext;
+            _userItem = useritem;
         }
 
         public IActionResult Index()
@@ -26,11 +28,11 @@ namespace GoodCoffeeShop.Controllers
             return View();
         }
 
-        public IActionResult AddUserForm() //Register Action for lab 23
+        public IActionResult AddUserForm() 
         {
             return View();
         }
-        public IActionResult FormResult(AddUserFormViewModel model) //MakeNewUser action for lab 23
+        public IActionResult FormResult(AddUserFormViewModel model) 
         {
             var viewModel = new FormResultViewModel();
             var isDouble = double.TryParse(model.Funds, out double actualFunds);
@@ -42,20 +44,20 @@ namespace GoodCoffeeShop.Controllers
             user.PhoneNum = model.PhoneNum;
             user.Password = model.Password;
             user.PasswordConfirmation = model.PasswordConfirmation;
-            user.UserName = $"{user.FirstName.ToLower()}{user.LastName.ToLower()}{user.PhoneNum.Substring(6, 4)}";
+            user.UserName = model.Email;
             user.Funds = actualFunds;
 
+            viewModel.theUser = new User();
+            viewModel.theUser.FirstName = model.FirstName;
+            viewModel.theUser.LastName = model.LastName;
+            viewModel.theUser.Email = model.Email;
+            viewModel.theUser.PhoneNum = model.PhoneNum;
+            viewModel.theUser.Password = model.Password;
+            viewModel.theUser.Funds = actualFunds;
+            viewModel.theUser.UserName = model.Email;
+            viewModel.theUser.PasswordConfirmation = model.PasswordConfirmation;
             //var userTest = new User(); //MAP FOR INDIVIDUAL USER INFO IN MODEL
-            _user.theUser.FirstName = user.FirstName;
-            _user.theUser.LastName = user.LastName;
-            _user.theUser.Email = user.Email;
-            _user.theUser.PhoneNum = user.PhoneNum;
-            _user.theUser.Password = user.Password;
-            _user.theUser.PasswordConfirmation = user.PasswordConfirmation;
-            _user.theUser.Funds = actualFunds;
-            _user.theUser.UserID = user.UserID;
-
-            viewModel.theUser = _user.theUser;
+           
 
             if (Validation.ValidateNames(viewModel.theUser) &&
               Validation.ValidateEmail(viewModel.theUser) &&
@@ -90,40 +92,57 @@ namespace GoodCoffeeShop.Controllers
       
         }
 
-        public IActionResult LogIn()
+        public IActionResult LogIn() //LAB 24
         {
             return View();
         }
-             
-        
-
-        //    //GetUserWhereIDIsFirst(viewModel.CurrentUserID);
-
-        //    //_user.theUser.UserID = viewModel.CurrentUserID;
-        //    //_user.theUser.Funds = viewModel.Funds;
 
 
-        public IActionResult Shop(LogInViewModel model) //Register Action for lab 23
+        public IActionResult GetCurrentUser(LogInViewModel model)
         {
-            
-            var viewModel = new ShopViewModel();
-
             foreach (var user in _shopDBContext.Users.ToList())
             {
                 if (user.UserName == model.UserName && user.Password == model.Password)
                 {
-                    model.CurrentUserID = user.UserID;
-                    model.Funds = user.Funds;
-
+                    _user.theUser.UserName = user.UserName;
+                    _user.theUser.Password = user.Password;
+                    _user.theUser.Email = user.Email;
+                    _user.theUser.PhoneNum = user.PhoneNum;
+                    _user.theUser.Password = user.Password;
+                    _user.theUser.PasswordConfirmation = user.PasswordConfirmation;
+                    _user.theUser.Funds = user.Funds;
+                    _user.theUser.UserID = user.UserID;
                 }
             }
 
-            viewModel.CurrentUserID = model.CurrentUserID;
-            viewModel.Funds = model.Funds;
+            _user.loggedIn = true;
 
-            var items = _shopDBContext.Items.ToList();
 
-            viewModel.Items = items
+            return View("SuccessfulLogIn");
+        }
+
+        public IActionResult LogOut() //LAB 24
+        {
+            _user.theUser.UserID = 0;
+            _user.theUser.Funds = 0;
+            _user.theUser.UserName = null;
+            _user.loggedIn = false;
+            return View();
+        }
+
+        public IActionResult Shop() //Register Action for lab 23
+        {
+
+            var viewModel = new ShopViewModel();
+
+            viewModel.CurrentUserID = _user.theUser.UserID;
+            viewModel.Funds = _user.theUser.Funds;
+
+            var storeItems = _shopDBContext.Items.ToList();
+
+            var userItems = _shopDBContext.UserItems.Where(userItem => userItem.UserId == _user.theUser.UserID).ToList();
+
+            viewModel.Items = storeItems
                 .Select(itemsDal => new Item()
                 {
                     ItemID = itemsDal.ItemID,
@@ -133,23 +152,39 @@ namespace GoodCoffeeShop.Controllers
                     Price = itemsDal.Price
                 }).ToList();
 
-            if (viewModel.CurrentUserID != 0)
+
+            foreach(var item in viewModel.Items)
+            {
+                foreach (var useritem in userItems)
+                {
+                    if (item.ItemID == useritem.ItemId)
+                    {
+                        item.PurchasedByUser = true;
+                    }
+                }
+            }
+
+            if (_user.theUser.UserID != 0)
             {
                 return View(viewModel);
             }
 
             else
             {
-                return View("LogIn", model);
+
+                return View("PleaseLogIn");
             }
         }
 
-        public IActionResult BuyResult(int userID, int ID, double funds) //ID for item
+        public IActionResult BuyResult(int ID) //ID for item
         {
             var viewModel = new BuyResultViewModel();
-            viewModel.Funds = funds;
-            viewModel.CurrentUserID = userID;
+            viewModel.Funds = _user.theUser.Funds;
+            viewModel.CurrentUserID = _user.theUser.UserID;
 
+            var userItem = new UserItemsDAL();
+            userItem.UserId = viewModel.CurrentUserID;
+            
             double price = 0;
 
             foreach (var item in _shopDBContext.Items.ToList())
@@ -157,24 +192,31 @@ namespace GoodCoffeeShop.Controllers
                 if (item.ItemID == ID)
                 {
                     price = item.Price;
+                    userItem.ItemId = item.ItemID;
+                    userItem.Name = item.Name;
+                    userItem.Description = item.Description;
+                    userItem.Quantity = item.Quantity;
+                    userItem.Price = item.Price;
+                 
                 }
             }
 
-            bool userInDB = false;
+            _shopDBContext.Add(userItem);
+            _shopDBContext.SaveChanges();
+
             bool enoughCash = false;
 
             foreach (var user in _shopDBContext.Users.ToList())
             {
                 if (user.UserID == viewModel.CurrentUserID)
                 {
-                    userInDB = true;
-
-                    if (user.Funds > price)
+                    if (viewModel.Funds > price)
                     {
                         enoughCash = true;
                         user.Funds = user.Funds - price;
                         _shopDBContext.SaveChanges();
                         viewModel.Funds = user.Funds;
+                        _user.theUser.Funds = user.Funds;
                     }
                 }
             }
@@ -182,16 +224,22 @@ namespace GoodCoffeeShop.Controllers
             var errorModel = new ErrorPageViewModel();
             errorModel.UserFunds = viewModel.Funds;
 
-            if (userInDB && enoughCash)
+            //var shopModel = new ShopViewModel();
+            //shopModel.CurrentUserID = _user.theUser.UserID;
+            //shopModel.Funds = _user.theUser.Funds;
+            
+
+
+            if (enoughCash)
             {
-                return View("Shop", viewModel);
+                return View(viewModel);
             }
             else
             {
                 return View("ErrorPage", errorModel);
             }
 
-          }
+        }
 
 
         public IActionResult ErrorPage(ShopViewModel model)
@@ -202,6 +250,19 @@ namespace GoodCoffeeShop.Controllers
             return View();
         }
 
+
+       
+
+
+
+
+        //    //GetUserWhereIDIsFirst(viewModel.CurrentUserID);
+
+        //    //_user.theUser.UserID = viewModel.CurrentUserID;
+        //    //_user.theUser.Funds = viewModel.Funds;
+
+
+       
 
 
             private User GetUserWhereIDIsFirst(int id)

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using GoodCoffeeShop.ViewModels.CoffeeShop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GoodCoffeeShop.Services
 {
-    public class User
+    public class User 
     {
         public int UserID { get; set; }
         public string FirstName { get; set; }
@@ -23,5 +24,6 @@ namespace GoodCoffeeShop.Services
 
         public string UserName { get; set; }
 
+        public List<Item> UserPurchases { get; set; }
     }
 }
