@@ -5,7 +5,7 @@
 }
 
 @model GoodCoffeeShop.ViewModels.CoffeeShop.ShopViewModel
-
+    <link rel="stylesheet" href="~/css/stylesheet.css" type="text/css" />
 
     <h1>ID NUMBER: @Model.CurrentUserID</h1>
     <h1>AVAILABLE FUNDS: $@Model.Funds</h1>
@@ -17,22 +17,23 @@
 @{
     foreach (var item in Model.Items)
     {
+    <div id="shopItems">
         <p>Name: @item.Name</p>
         <p>Description: @item.Description</p>
         <p>Price: @item.Price</p>
         <p>Quantity: @item.Quantity</p>
 
 
-        if (item.PurchasedByUser != true)
+        @if (item.PurchasedByUser != true)
         {
-            <a asp-controller="CoffeeShop" asp-action="BuyResult" asp-route-id="@item.ItemID" asp-route-userid="@Model.CurrentUserID">BUY ITEM</a>
+        <a asp-controller="CoffeeShop" asp-action="BuyResult" asp-route-id="@item.ItemID" asp-route-userid="@Model.CurrentUserID">BUY ITEM</a>
         }
         else
         {
-            <h3>Purchased by current user: @Model.CurrentUserID </h3>
-            <a asp-controller="CoffeeShop" asp-action="BuyResult" asp-route-id="@item.ItemID" asp-route-userid="@Model.CurrentUserID">BUY ITEM AGAIN?</a>
+        <h5>Purchased by current user: @Model.CurrentUserID </h5>
+        <a asp-controller="CoffeeShop" asp-action="BuyResult" asp-route-id="@item.ItemID" asp-route-userid="@Model.CurrentUserID">BUY ITEM AGAIN?</a>
         }
-
+    </div>
         <br />
     }
 }

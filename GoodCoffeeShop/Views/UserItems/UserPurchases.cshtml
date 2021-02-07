@@ -5,15 +5,18 @@
 }
 
 @model GoodCoffeeShop.ViewModels.CoffeeShop.UserPurchasesViewModel
-
+    <link rel="stylesheet" href="~/css/stylesheet.css" type="text/css" />
 
 <h2>Your purchased items are below: </h2>
 @{
     foreach (var item in Model.userPurchases)
     {
-        <a asp-controller="UserItems" asp-action="ItemDetails" asp-route-id="@item.ItemID">@item.Name Details</a>
-        <a asp-controller="UserItems" asp-action="DeleteConfirmation" asp-route-id="@item.ItemID", asp-route-userid="@Model.CurrentUserID">DELETE ITEM</a>
-        <br/>
+        <div id="userItems">
+            <a asp-controller="UserItems" asp-action="ItemDetails" asp-route-id="@item.ItemID">@item.Name Details</a>
+            <br />
+            <a asp-controller="UserItems" asp-action="DeleteConfirmation" asp-route-id="@item.ItemID" , asp-route-userid="@Model.CurrentUserID">DELETE ITEM</a>
+        </div>
+        <br />
     }
 }
 
