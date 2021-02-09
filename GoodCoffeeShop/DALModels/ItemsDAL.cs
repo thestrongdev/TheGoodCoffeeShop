@@ -19,7 +19,7 @@ namespace GoodCoffeeShop.DALModels
         public int Quantity { get; set; }
         public double Price { get; set; }
 
-        [ForeignKey("Id")]
+        [ForeignKey("User")]
         public string Id { get; set; }
 
         public IdentityUser User { get; set; }

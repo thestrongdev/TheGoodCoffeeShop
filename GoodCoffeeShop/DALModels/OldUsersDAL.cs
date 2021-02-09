@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,15 +8,19 @@ using System.Threading.Tasks;
 
 namespace GoodCoffeeShop.DALModels
 {
-    public class OldUsersDAL
+    public class OldUsersDAL/* : IdentityUser*/
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OldUserId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+
+        //public IEnumerable<ItemsDAL> userItems { get; set; }
 
         public string Email { get; set; }
+        public string UserName { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public string PhoneNum { get; set; }
 
@@ -25,7 +30,6 @@ namespace GoodCoffeeShop.DALModels
 
         public double Funds { get; set; }
 
-        public string UserName { get; set; }
 
     }
 }
